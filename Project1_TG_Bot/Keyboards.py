@@ -16,7 +16,7 @@ open_key_photo.add(but_rand_photo, but_return)
 
 key_inline_photo = InlineKeyboardMarkup(row_width=2)
 but_next_photo = InlineKeyboardButton(
-    "Следующая рандомная фотографиия", callback_data="next")
+    "Следующая рандомная фотография", callback_data="next")
 but_like = InlineKeyboardButton("Лайк", callback_data="like")
 but_dislike = InlineKeyboardButton("Дизлайк", callback_data="dislike")
 
