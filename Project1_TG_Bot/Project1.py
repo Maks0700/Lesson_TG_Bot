@@ -3,7 +3,7 @@ import random
 from Token import api_token
 from Keyboards import keyboard_reply, open_key_photo, key_inline_photo
 from aiogram.dispatcher.filters import Text
-from aiogram.utils.markdown import hide_link
+
 
 
 bot = Bot(api_token)
@@ -21,8 +21,21 @@ HELP_COMMAND = """
 
 
 """
-list_photo = ["city.jpg","nature.jpg","pets.jpg"]
 
+async def send_rand(message:types.Message):
+    random_photo=random.choice(list(photos.keys()))
+    await bot.send_photo(message.chat.id,photo=random_photo,reply_markup=key_inline_photo)
+
+
+
+
+list_photo = ["https://w.forfun.com/fetch/c5/c514ddd3da0d86f1348f4b10560f7f35.jpeg",
+              "https://fikiwiki.com/uploads/posts/2022-02/1644918620_17-fikiwiki-com-p-krasivie-kartinki-visokogo-razresheniya-19.jpg"]
+
+
+photos=dict(zip(list_photo,["Enviroment","Paris"]))
+
+random_photo=random.choice(list(photos.keys()))
 
 
 
@@ -36,6 +49,8 @@ async def open_keyboard_photo(message: types.Message):
 async def open_keyboard(message: types.Message):
     await message.answer(text="Добро пожаловать в главное меню",
                          reply_markup=keyboard_reply)
+
+
 
 
 @dp.message_handler(Text(equals="Рандом"))
@@ -65,19 +80,20 @@ async def descript(message: types.Message):
 
 @dp.callback_query_handler()
 async def proccess_callback(callback: types.callback_query):
-    arr_photo=[]
+    global random_photo
     if callback.data=="like":
         await callback.answer("Вам понравилось")
     elif callback.data=="dislike":
         await callback.answer("Вам не понравилось")
     else:
-        for photo in list_photo:
-            with open(photo,"rb") as file_photo:
-                arr_photo.append(file_photo)
-    
-        random_photo=random.choice(arr_photo)
-        await bot.send_photo(callback.message.from_user.id,random_photo,reply_markup=key_inline_photo)
         
+        random_photo=random.choice(list(filter(lambda x:x!=random_photo,list(photos.keys()))))
+        await callback.message.edit_media(types.InputMedia(media=random_photo,
+                                                           type="photo",caption=photos[random_photo],
+                                                           reply_markup=key_inline_photo))
+        await callback.answer()
+
+
 
         
         

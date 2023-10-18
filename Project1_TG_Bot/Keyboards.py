@@ -1,5 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 import random
+
 keyboard_reply = ReplyKeyboardMarkup(
     resize_keyboard=True, one_time_keyboard=True)
 but_help = KeyboardButton(text="/help")
@@ -21,3 +22,5 @@ but_like = InlineKeyboardButton("Лайк", callback_data="like")
 but_dislike = InlineKeyboardButton("Дизлайк", callback_data="dislike")
 
 key_inline_photo.add(but_next_photo, but_like, but_dislike)
+
+
