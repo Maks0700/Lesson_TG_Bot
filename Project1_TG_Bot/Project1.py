@@ -21,6 +21,8 @@ HELP_COMMAND="""
 
 """
 
+flag=False
+
 list_ex=["https://proprikol.ru/wp-content/uploads/2020/04/krasivye-kartinki-vysokogo-razresheniya-3.jpg","https://w.forfun.com/fetch/03/03f8cd3f6796daaacc1fe43ffb7704b7.jpeg"]
 dict_photos=dict(zip(list_ex,["first","second"]))
 random_photo=random.choice(list(dict_photos.keys()))
@@ -60,9 +62,14 @@ async def return_main_menu(message:types.Message):
 @dp.callback_query_handler()
 
 async def vote(callback:types.CallbackQuery):
+    global flag
     global random_photo
     if callback.data=="like":
-        await callback.message.answer("Лайк этой фотки")
+        if not flag:
+            await callback.message.answer("Лайк этой фотки")
+            flag=True
+        else:
+            await callback.message.answer("Вы уже лайкали эту фотку!")
     elif callback.data =="dislike":
         await callback.message.answer("Дизлайк этой фотки")
     else:
